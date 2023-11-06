@@ -113,6 +113,9 @@ void izpis() {
     cout << endl;
 }
 
+bool iskanjeEl(char a);
+void izpis_obratno();
+
 int main() {
 
     addEl('A');
@@ -122,10 +125,40 @@ int main() {
     addEl('E');
     addEl('F');
     izpis();
+    izpis_obratno();
+    //cout << iskanjeEl('A') << endl;
     //brisZacetek();
     //izpis();
     brisMesto(6);
     izpis();
+    
 
+    while(start != nullptr)
+        brisZacetek();
     return 0;
+}
+
+/*
+    3. Za seznam iz prejšnje naloge napiši še dodatne funkcije za:
+        a) iskanje elementa – funkcija preveri če element s podanim ključev obstaja v seznamu
+        b) izpis elementov v obratnem vrstnem redu
+*/
+
+bool iskanjeEl(char a) {
+    struct El *tmp = start;
+    while(tmp != nullptr) {
+        if(tmp->x == a)
+            return true;
+        tmp = tmp->next;
+    }
+    return false;
+}
+
+void izpis_obratno() {
+    struct El *tmp = konc;
+    while(tmp != nullptr) {
+        cout << tmp->x << " ";
+        tmp = tmp->prev;
+    }
+    cout << endl;
 }
