@@ -38,6 +38,7 @@ void Urejen(struct Rac a) {
             tmp->next = start;
             start->prev = tmp;
             start = tmp;
+            start->prev = nullptr;
         }
         else if(t == nullptr) { //na koncu
             tmp->prev = konc;
