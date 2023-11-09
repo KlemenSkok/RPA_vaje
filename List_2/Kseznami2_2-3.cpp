@@ -135,6 +135,8 @@ int main() {
 
     while(start != nullptr)
         brisZacetek();
+    
+    //system("pause");
     return 0;
 }
 
