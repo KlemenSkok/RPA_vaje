@@ -54,7 +54,7 @@ void Urejen(struct Rac a) {
     }
 }
 
-void Brisi(float a) {
+void Brisi_po_RAM(float a) {
     struct El *t = start;
     if(start == nullptr)
         cout << "Prazen seznam!\n";
@@ -96,6 +96,93 @@ void Brisi(float a) {
     }
 }
 
+void Brisi_po_GHz(float a) {
+    struct El *t = start;
+    if(start == nullptr)
+        cout << "Prazen seznam!\n";
+    else {
+        while(t != nullptr) {
+            if(t->x.hitrost < a) { //brisi ce je RAM manjsi od a
+                if(t == start) {
+                    if(start != konc) {
+                        start = start->next;
+                        start->prev = nullptr;
+                        delete t;
+                        t = start; //postavi nazaj na zacetek za nadaljevanje
+                    }
+                    else {
+                        start = nullptr;
+                        konc = nullptr;
+                        delete t;
+                        t = nullptr; //seznam je prazen, zato gre zapusti loop
+                    }
+                }
+                else if(t == konc) { // je na koncu
+                    konc = konc->prev;
+                    konc->next = nullptr;
+                    delete t;
+                    t = nullptr; //dosegel konec seznama, zato zapusti loop
+                }
+                else { //je nekje vmes
+                    t->prev->next = t->next;
+                    t->next->prev = t->prev;
+                    struct El *tmp_ptr = t->next;
+                    delete t;
+                    t = tmp_ptr;
+                }
+            }
+            else { //drugace se premakni naprej
+                t = t->next;
+            }
+        }
+    }
+}
+
+// ta funkcija se premika po seznamu le dokler je v obsegu dolocenega parametra (manjsa od a) in izbrise vsak element
+void Brisi_RAM_odZacetka(float l, float h) {
+    struct El *t = start;
+    if(start == nullptr)
+        cout << "Prazen seznam\n";
+    else if(l >= h)
+        cout << "Nepravilni parametri!\n";
+    else {
+        while(t != nullptr && t->x.RAM < h) {
+            if(t->x.RAM > l) {
+                if(t == start) {
+                    if(start != konc) {
+                        start = start->next;
+                        start->prev = nullptr;
+                        delete t;
+                        t = start;                    
+                    }
+                    else { // edini element
+                        start = nullptr;
+                        konc = nullptr;
+                        delete t;
+                        t = nullptr; //da zapusti loop
+                    }
+                }
+                else if(t == konc) { //na koncu
+                    konc = konc->prev;
+                    konc->next = nullptr;
+                    delete t,
+                    t = nullptr;
+                }
+                else { //nekje vmes
+                    t->next->prev = t->prev;
+                    t->prev->next = t->next;
+                    struct El *tmp_ptr = t->next;
+                    delete t;
+                    t = tmp_ptr;
+                }
+            }
+            else { //ni še dosegel želenega intervala, premakni se naprej
+                t = t->next;
+            }
+        }
+    }
+}
+
 void izpis() {
     struct El *tmp = start;
     while(tmp != nullptr) {
@@ -107,15 +194,17 @@ void izpis() {
 
 int main() {
 
-    float stevilo;
-    cin >> stevilo;
+    float stevilo1, stevilo2;
+    cin >> stevilo1;
+    cin >> stevilo2;
     srand(time(NULL));
 
     for(int i = 0; i < 15; i++)
         Urejen({"AA", (float)(rand()%1000+1), (float)(rand()%1000+1)});
 
     izpis();
-    Brisi(stevilo);
+    //Brisi_po_RAM(stevilo);
+    Brisi_RAM_odZacetka(stevilo1, stevilo2);
     izpis();
 
     system("pause");
